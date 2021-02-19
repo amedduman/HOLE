@@ -1,0 +1,13 @@
+﻿# Default ignored files
+/shelf/
+/workspace.xml
+# Rider ignored files
+/modules.xml
+/projectSettingsUpdater.xml
+/.idea.merging game.iml
+/contentModel.xml
+# Datasource local storage ignored files
+/../../../../../../../../../:\Users\amedd\Desktop\merging-game\merging game\.idea\.idea.merging game\.idea/dataSources/
+/dataSources.local.xml
+# Editor-based HTTP Client requests
+/httpRequests/
