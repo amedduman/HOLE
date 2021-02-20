@@ -6,10 +6,11 @@ using UnityEngine;
 public class HoleMovement : MonoBehaviour
 {
     private Mesh _groundMesh;
-    private Vector3[] meshVerts;
+    private Vector3[] _meshVerts;
     [SerializeField] private Transform holeCenter;
     [SerializeField] private float radius;
-
+    private MeshCollider _meshCollider;
+    
     struct VertData
     {
         public Vector3 Position;
@@ -17,50 +18,55 @@ public class HoleMovement : MonoBehaviour
     }
 
     private VertData[] _vertsData;
-    
+
+    private void Awake()
+    {
+        _meshCollider = GetComponentInChildren<MeshCollider>();
+    }
+
     private void Start()
     {
         SetHoleVerts();
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
-        RaycastHit hit;
-        // Does the ray intersect any objects excluding the player layer
-        if (Physics.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), transform.TransformDirection(Vector3.forward), out hit, Mathf.Infinity))
-        {
-            Debug.DrawRay(Camera.main.ScreenToWorldPoint(Input.mousePosition), transform.TransformDirection(Vector3.forward) * hit.distance, Color.yellow);
-            Debug.Log("Did Hit");
-        }
-        else
-        {
-            Debug.DrawRay(Camera.main.ScreenToWorldPoint(Input.mousePosition), transform.TransformDirection(Vector3.forward) * 1000, Color.white);
-            Debug.Log("Did not Hit");
-        }
+        if (!Input.GetMouseButton(0)) return;
+        var x = Input.GetAxis("Mouse X");
+        var y = Input.GetAxis("Mouse Y");
+        var move = new Vector3(x,-y);
+        MoveColSphere(move);
+        MoveHole(move);
+    }
+
+    private void MoveColSphere(Vector3 move)
+    {
+        holeCenter.position += new Vector3(move.x,0,-move.y);
     }
 
     private void MoveHole(Vector3 pos)
     {
         ChangeHoleVertsPos(pos);
         ChangeHolePos();
+        _meshCollider.sharedMesh = _groundMesh;
     }
 
     private void SetHoleVerts()
     {
         _groundMesh = GetComponentInChildren<MeshFilter>().mesh;
-        meshVerts = _groundMesh.vertices;
-        _vertsData = new VertData[meshVerts.Length];
+        _meshVerts = _groundMesh.vertices;
+        _vertsData = new VertData[_meshVerts.Length];
 
-        for (int i = 0, length = meshVerts.Length; i < length; i++)
+        for (int i = 0, length = _meshVerts.Length; i < length; i++)
         {
-            if (IsHoleVert(meshVerts[i]))
+            if (IsHoleVert(_meshVerts[i]))
             {
-                _vertsData[i].Position = meshVerts[i];
+                _vertsData[i].Position = _meshVerts[i];
                 _vertsData[i].IsHole = true;
             }
             else
             {
-                _vertsData[i].Position = meshVerts[i];
+                _vertsData[i].Position = _meshVerts[i];
                 _vertsData[i].IsHole = false;
             }
         }
@@ -77,11 +83,11 @@ public class HoleMovement : MonoBehaviour
         {
             if (_vertsData[i].IsHole)
             {
-                meshVerts[i] = _vertsData[i].Position;
+                _meshVerts[i] = _vertsData[i].Position;
             }
         }
 
-        _groundMesh.vertices = meshVerts;
+        _groundMesh.vertices = _meshVerts;
     }
 
     private void ChangeHoleVertsPos(Vector3 pos)
@@ -90,7 +96,7 @@ public class HoleMovement : MonoBehaviour
         {
             if (_vertsData[i].IsHole)
             {
-                _vertsData[i].Position = pos;
+                _vertsData[i].Position += pos;
             }
         }
     }
