@@ -9,7 +9,7 @@ public class HoleTrigger : MonoBehaviour
     {
         if (other.gameObject.CompareTag("collectable"))
         {
-            Debug.Log("collect");
+            GameManager.Instance.DecreaseCollectableCount();
         }
         else if (other.gameObject.CompareTag("damaging"))
         {

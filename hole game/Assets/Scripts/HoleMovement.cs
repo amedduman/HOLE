@@ -5,15 +5,17 @@ using UnityEngine;
 
 public class HoleMovement : MonoBehaviour
 {
-    private Mesh _groundMesh;
-    private Vector3[] _meshVerts;
-    private Bounds _groundBounds;
     [SerializeField] private Transform holeCenter;
     [SerializeField] private float radius;
     [SerializeField] [Range(.1f,1)] private float speed = 1;
     
+    private Mesh _groundMesh;
+    private Vector3[] _meshVerts;
+    private Bounds _groundBounds;
     private MeshCollider _meshCollider;
-    
+    private Vector3 _initialPos;
+    Vector3[] _initialVertsPos;
+
     struct VertData
     {
         public Vector3 Position;
@@ -22,14 +24,22 @@ public class HoleMovement : MonoBehaviour
 
     private VertData[] _vertsData;
 
+    private void OnEnable()
+    {
+        GameManager.Instance.OnLoadNextLevel += ResetHolePos;
+    }
+
     private void Awake()
     {
         _meshCollider = GetComponentInChildren<MeshCollider>();
         _groundBounds = GetComponentInChildren<BoxCollider>().bounds;
+        _groundMesh = GetComponentInChildren<MeshFilter>().mesh;
     }
 
     private void Start()
     {
+        _initialPos = holeCenter.position;
+        _initialVertsPos = _groundMesh.vertices;
         SetHoleVerts();
     }
 
@@ -40,8 +50,20 @@ public class HoleMovement : MonoBehaviour
         var y = Input.GetAxis("Mouse Y") * speed;
         var move = new Vector3(x,-y);
         if (!IsInBounds(move)) return;
-        MoveColSphere(move);
+        MoveHoleCenter(move);
         MoveHole(move);
+    }
+
+    private void ResetHolePos()
+    {
+        _groundMesh.vertices = _initialVertsPos;
+        holeCenter.position = _initialPos;
+        _meshCollider.sharedMesh = _groundMesh;
+        
+        for (int i = 0, length = _vertsData.Length; i < length; i++)
+        {
+            _vertsData[i].Position = _initialVertsPos[i];
+        }
     }
 
     private bool IsInBounds(Vector3 move)
@@ -51,7 +73,7 @@ public class HoleMovement : MonoBehaviour
         return _groundBounds.Contains(pos);
     }
 
-    private void MoveColSphere(Vector3 move)
+    private void MoveHoleCenter(Vector3 move)
     {
         holeCenter.position += new Vector3(move.x,0,-move.y);
     }
@@ -65,7 +87,6 @@ public class HoleMovement : MonoBehaviour
 
     private void SetHoleVerts()
     {
-        _groundMesh = GetComponentInChildren<MeshFilter>().mesh;
         _meshVerts = _groundMesh.vertices;
         _vertsData = new VertData[_meshVerts.Length];
 

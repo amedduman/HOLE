@@ -7,14 +7,14 @@ using UnityEngine;
 
 public class LevelManager : MonoBehaviour
 {
-    private static LevelManager _levelManager;
+    private static LevelManager _instance;
 
     public static LevelManager Instance
     {
         get
         {
-            if (_levelManager == null) Debug.Log("there is no level manager at the scene");
-            return _levelManager;
+            if (_instance == null) Debug.Log("there is no level manager at the scene");
+            return _instance;
         }
     }
     
@@ -45,16 +45,22 @@ public class LevelManager : MonoBehaviour
      
     private void Awake()
     {
-        if (_levelManager == null)
+        if (_instance == null)
         {
-            _levelManager = this;
+            _instance = this;
         }
-        else if(_levelManager != this)
+        else if(_instance != this)
         {
             Destroy(this.gameObject);
         }
         
         LoadCurrentLevel();
+    }
+
+    public int GetCollectableCount()
+    {
+        var count = levels[_currentLevelIndex].collectableCount;
+        return count;
     }
 
     public void LoadCurrentLevel()
@@ -89,17 +95,5 @@ public class LevelManager : MonoBehaviour
     {
         DisableCurrentLevel();
         LoadCurrentLevel();
-    }
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            LoadNextLevel();
-        }
-        if (Input.GetKeyDown(KeyCode.D))
-        {
-            ResetLevel();
-        }
     }
 }
