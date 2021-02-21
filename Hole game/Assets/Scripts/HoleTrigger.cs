@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CollisionSphere : MonoBehaviour
+public class HoleTrigger : MonoBehaviour
 {
     private void OnTriggerEnter(Collider other)
     {

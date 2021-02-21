@@ -7,6 +7,6 @@ public class DestroyFallenCubes : MonoBehaviour
 {
     private void OnCollisionEnter(Collision other)
     {
-        Destroy(other.gameObject);
+        // other.gameObject.SetActive(false);
     }
 }
