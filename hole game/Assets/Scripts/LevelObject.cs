@@ -16,12 +16,23 @@ public class LevelObject : MonoBehaviour
 
     private void Start()
     {
-        // GameManager.Instance.OnWaitingForNextLevel += () =>
-        //     GetComponentInChildren<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
-        // GameManager.Instance.OnLoadNextLevel += () => 
-        //     GetComponentInChildren<Rigidbody>().constraints = RigidbodyConstraints.None;
+        GameManager.Instance.OnWaitingForNextLevel += FreezeObject;
+        GameManager.Instance.OnLoadNextLevel += LetObjectMove;
+
+        GameManager.Instance.OnWaitingRestartLevel += FreezeObject;
+
     }
 
+    private void FreezeObject()
+    {
+        GetComponentInChildren<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
+    }
+
+    private void LetObjectMove()
+    {
+        GetComponentInChildren<Rigidbody>().constraints = RigidbodyConstraints.None;
+    }
+    
     private void OnEnable()
     {
         _initialPos = _tr.localPosition;

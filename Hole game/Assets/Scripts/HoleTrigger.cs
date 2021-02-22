@@ -5,17 +5,14 @@ using UnityEngine;
 
 public class HoleTrigger : MonoBehaviour
 {
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerExit(Collider other)
     {
         if (other.gameObject.CompareTag("collectable"))
         {
             GameManager.Instance.DecreaseCollectableCount();
         }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.gameObject.CompareTag("damaging"))
+        
+        else if (other.gameObject.CompareTag("damaging"))
         {
             GameManager.Instance.RestartLevel();
         }

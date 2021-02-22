@@ -46,7 +46,7 @@ public class UIManager : MonoBehaviour
         levelBar.DOFillAmount(levelPercent, levelBarFillDuration);
     }
 
-    private void ResetLevelBar()
+    public void ResetLevelBar()
     {
         levelBar.fillAmount = 0;
     }

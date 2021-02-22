@@ -19,6 +19,7 @@ public class GameManager : MonoBehaviour
 
     public event Action OnLoadNextLevel;
     public event Action OnWaitingForNextLevel;
+    public event Action OnWaitingRestartLevel;
     
     private void Awake()
     {
@@ -65,6 +66,9 @@ public class GameManager : MonoBehaviour
 
     public void RestartLevel()
     {
+        OnWaitingRestartLevel?.Invoke();
+        _currentCollectableCount = _levelCollectableCount;
+        UIManager.Instance.ResetLevelBar();
         OnLoadNextLevel?.Invoke();
         UIManager.Instance.HandleRestart();
         LevelManager.Instance.ResetProcess();
