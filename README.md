@@ -1,4 +1,4 @@
 # HOLE
  A hyper casual game
  Gameplay video
-[![Watch the video](https://i.imgur.com/vKb2F1B.png)](https://youtu.be/0JOAizLrxMA)
+[![Gameplay video](https://img.youtube.com/vi/0JOAizLrxMA)](https://www.youtube.com/watch?v=0JOAizLrxMA&feature=youtu.be)
