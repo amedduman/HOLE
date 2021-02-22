@@ -56,7 +56,8 @@ public class LevelManager : MonoBehaviour
         {
             Destroy(this.gameObject);
         }
-        
+
+        _currentLevelIndex = PlayerPrefs.GetInt("_savedLevel");
         LoadCurrentLevel();
     }
 
@@ -66,7 +67,7 @@ public class LevelManager : MonoBehaviour
         return count;
     }
 
-    public void LoadCurrentLevel()
+    private void LoadCurrentLevel()
     {
         var currentLevel = levels[_currentLevelIndex];
         currentLevel.level.gameObject.SetActive(true);
@@ -79,11 +80,13 @@ public class LevelManager : MonoBehaviour
         if (_currentLevelIndex < levels.Count - 1)
         {
             _currentLevelIndex++;
+            SaveLevelIndex(_currentLevelIndex);
             LoadCurrentLevel();
         }
         else
         {
             _currentLevelIndex = 0;
+            SaveLevelIndex(_currentLevelIndex);
             LoadCurrentLevel();
         }
     }
@@ -98,5 +101,11 @@ public class LevelManager : MonoBehaviour
     {
         DisableCurrentLevel();
         LoadCurrentLevel();
+    }
+
+    private void SaveLevelIndex(int currentIndex)
+    {
+        PlayerPrefs.SetInt("_savedLevel", currentIndex);
+        PlayerPrefs.Save();
     }
 }
