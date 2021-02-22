@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -21,6 +22,9 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Button playAgainButton;
     [SerializeField] private float levelBarFillDuration = 0.3f;
     [SerializeField] private float endScreenShowUpDelay = 0.6f;
+    [SerializeField] private Image panel;
+
+    public event Action OnRestartEffects;
     
     private void Awake()
     {
@@ -63,5 +67,12 @@ public class UIManager : MonoBehaviour
         GameManager.Instance.HandleNextLevel();
         playAgainButton.gameObject.SetActive(false);
         ResetLevelBar();
+    }
+
+    public void HandleRestart()
+    {
+        panel.color = Color.white;
+        OnRestartEffects?.Invoke();
+        panel.DOFade(0, 1);
     }
 }

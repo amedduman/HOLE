@@ -14,7 +14,8 @@ public class LevelManager : MonoBehaviour
     {
         get
         {
-            if (_instance == null) Debug.Log("there is no level manager at the scene");
+            if (_instance == null)
+                Debug.Log("there is no level manager at the scene");
             return _instance;
         }
     }
@@ -92,7 +93,7 @@ public class LevelManager : MonoBehaviour
         currentLevel.level.gameObject.SetActive(false);
     }
 
-    public void ResetLevel()
+    public void ResetProcess()
     {
         DisableCurrentLevel();
         LoadCurrentLevel();

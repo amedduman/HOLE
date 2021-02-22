@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -35,6 +36,8 @@ public class GameManager : MonoBehaviour
     private int _levelCollectableCount;
     private void Start()
     {
+        Application.targetFrameRate = 30;
+        
         _currentCollectableCount = LevelManager.Instance.GetCollectableCount();
         _levelCollectableCount = LevelManager.Instance.GetCollectableCount();
         UpdateLevelUI();
@@ -62,7 +65,9 @@ public class GameManager : MonoBehaviour
 
     public void RestartLevel()
     {
-        
+        OnLoadNextLevel?.Invoke();
+        UIManager.Instance.HandleRestart();
+        LevelManager.Instance.ResetProcess();
     }
 
     private void UpdateLevelUI()

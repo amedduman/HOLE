@@ -11,9 +11,13 @@ public class HoleTrigger : MonoBehaviour
         {
             GameManager.Instance.DecreaseCollectableCount();
         }
-        else if (other.gameObject.CompareTag("damaging"))
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.CompareTag("damaging"))
         {
-            Debug.Log( "damage");
+            GameManager.Instance.RestartLevel();
         }
     }
 }
