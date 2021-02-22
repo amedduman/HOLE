@@ -1,5 +1,7 @@
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class LevelManager : MonoBehaviour
 {
@@ -85,18 +87,18 @@ public class LevelManager : MonoBehaviour
             LoadCurrentLevel();
         }
     }
+
+    public void RestartLevel()
+    {
+        DOTween.PauseAll();
+        SceneManager.LoadScene(0);
+    }
     
     private void DisableCurrentLevel()
     {
         var currentLevel = levels[_currentLevelIndex];
         currentLevel.level.gameObject.SetActive(false);
     }
-
-    // public void ResetProcess()
-    // {
-    //     DisableCurrentLevel();
-    //     LoadCurrentLevel();
-    // }
 
     private void SaveLevelIndex(int currentIndex)
     {

@@ -69,10 +69,18 @@ public class UIManager : MonoBehaviour
         ResetLevelBar();
     }
 
-    public void HandleLevelTransition()
+    public void HandleNextLevelTransition()
     {
         panel.color = Color.white;
+        panel.DOFade(0, 1);
+    }
+
+    public IEnumerator HandleRestartLevelTransition()
+    {
+        panel.color = new Color(.2f,0,0,1);
         OnRestartEffects?.Invoke();
         panel.DOFade(0, 1);
+        yield return new WaitForSeconds(endScreenShowUpDelay);
+        LevelManager.Instance.RestartLevel();
     }
 }

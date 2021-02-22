@@ -18,7 +18,7 @@ public class GameManager : MonoBehaviour
 
     public event Action OnLoadNextLevel;
     public event Action OnWaitingForNextLevel;
-
+    public event Action OnFail;
     private void Awake()
     {
         if (_instance == null)
@@ -36,9 +36,6 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         Application.targetFrameRate = 30;
-        
-        UIManager.Instance.HandleLevelTransition();
-        
         _currentCollectableCount = LevelManager.Instance.GetCollectableCount();
         _levelCollectableCount = LevelManager.Instance.GetCollectableCount();
         UpdateLevelUI();
@@ -62,12 +59,13 @@ public class GameManager : MonoBehaviour
         _currentCollectableCount = LevelManager.Instance.GetCollectableCount();
         _levelCollectableCount = LevelManager.Instance.GetCollectableCount();
         UpdateLevelUI();
+        UIManager.Instance.HandleNextLevelTransition();
     }
 
     public void RestartLevel()
     {
-        DOTween.PauseAll();
-        SceneManager.LoadScene(0);
+        OnFail?.Invoke();
+        StartCoroutine(UIManager.Instance.HandleRestartLevelTransition());
     }
 
     private void UpdateLevelUI()

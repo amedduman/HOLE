@@ -37,6 +37,7 @@ public class HoleMovement : MonoBehaviour
         GameManager.Instance.OnLoadNextLevel += ResetHolePos;
         GameManager.Instance.OnLoadNextLevel += () => _isStopping = false;
         GameManager.Instance.OnWaitingForNextLevel += () => _isStopping = true;
+        GameManager.Instance.OnFail += () => _isStopping = true;
         _initialPos = holeCenter.position;
         _initialVertsPos = _groundMesh.vertices;
         SetHoleVerts();
