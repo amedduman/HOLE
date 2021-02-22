@@ -1,8 +1,7 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using DG.Tweening;
+using UnityEngine.SceneManagement;
 using UnityEngine;
+using DG.Tweening;
 
 public class GameManager : MonoBehaviour
 {
@@ -20,7 +19,7 @@ public class GameManager : MonoBehaviour
     public event Action OnLoadNextLevel;
     public event Action OnWaitingForNextLevel;
     public event Action OnWaitingRestartLevel;
-    
+
     private void Awake()
     {
         if (_instance == null)
@@ -66,12 +65,13 @@ public class GameManager : MonoBehaviour
 
     public void RestartLevel()
     {
-        OnWaitingRestartLevel?.Invoke();
-        _currentCollectableCount = _levelCollectableCount;
-        UIManager.Instance.ResetLevelBar();
-        OnLoadNextLevel?.Invoke();
-        UIManager.Instance.HandleRestart();
-        LevelManager.Instance.ResetProcess();
+        DOTween.PauseAll();
+        SceneManager.LoadScene(0);
+        // _currentCollectableCount = _levelCollectableCount;
+        // OnWaitingRestartLevel?.Invoke();
+        // OnLoadNextLevel?.Invoke();
+        // UIManager.Instance.HandleRestart();
+        // LevelManager.Instance.ResetProcess();
     }
 
     private void UpdateLevelUI()

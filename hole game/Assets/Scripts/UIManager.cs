@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
+using UnityEditor.Build.Content;
 
 public class UIManager : MonoBehaviour
 {
@@ -46,9 +47,10 @@ public class UIManager : MonoBehaviour
         levelBar.DOFillAmount(levelPercent, levelBarFillDuration);
     }
 
-    public void ResetLevelBar()
+    private void ResetLevelBar()
     {
         levelBar.fillAmount = 0;
+        levelBar.DOFillAmount(0, 0);
     }
 
     public void ShowEndLevelScreen()
@@ -71,6 +73,7 @@ public class UIManager : MonoBehaviour
 
     public void HandleRestart()
     {
+        ResetLevelBar();
         panel.color = Color.white;
         OnRestartEffects?.Invoke();
         panel.DOFade(0, 1);
