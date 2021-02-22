@@ -7,6 +7,6 @@ public class DestroyFallenCubes : MonoBehaviour
 {
     private void OnCollisionEnter(Collision other)
     {
-        // other.gameObject.SetActive(false);
+        other.gameObject.GetComponent<MeshRenderer>().enabled = false;
     }
 }

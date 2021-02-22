@@ -14,10 +14,19 @@ public class LevelObject : MonoBehaviour
         _tr = transform.GetChild(0).transform;
     }
 
+    private void Start()
+    {
+        // GameManager.Instance.OnWaitingForNextLevel += () =>
+        //     GetComponentInChildren<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
+        // GameManager.Instance.OnLoadNextLevel += () => 
+        //     GetComponentInChildren<Rigidbody>().constraints = RigidbodyConstraints.None;
+    }
+
     private void OnEnable()
     {
         _initialPos = _tr.localPosition;
         _initialRot = _tr.rotation;
+        GetComponentInChildren<MeshRenderer>().enabled = true;
     }
 
     private void OnDisable()

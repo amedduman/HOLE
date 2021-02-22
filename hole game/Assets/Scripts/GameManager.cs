@@ -17,6 +17,7 @@ public class GameManager : MonoBehaviour
     }
 
     public event Action OnLoadNextLevel;
+    public event Action OnWaitingForNextLevel;
     
     private void Awake()
     {
@@ -31,35 +32,41 @@ public class GameManager : MonoBehaviour
     }
 
     private int _currentCollectableCount;
+    private int _levelCollectableCount;
     private void Start()
     {
         _currentCollectableCount = LevelManager.Instance.GetCollectableCount();
+        _levelCollectableCount = LevelManager.Instance.GetCollectableCount();
         UpdateLevelUI();
     }
 
     public void DecreaseCollectableCount()
     {
-        if (_currentCollectableCount > 1)
+        _currentCollectableCount--;
+        UpdateLevelUI();
+        if (_currentCollectableCount == 0)
         {
-            _currentCollectableCount--;
-            UpdateLevelUI();
-        }
-        else
-        {
-            HandleNextLevel();
+            OnWaitingForNextLevel?.Invoke();
+            UIManager.Instance.ShowEndLevelScreen();
         }
     }
 
-    private void HandleNextLevel()
+    public void HandleNextLevel()
     {
         OnLoadNextLevel?.Invoke();
         LevelManager.Instance.LoadNextLevel();
         _currentCollectableCount = LevelManager.Instance.GetCollectableCount();
+        _levelCollectableCount = LevelManager.Instance.GetCollectableCount();
         UpdateLevelUI();
+    }
+
+    public void RestartLevel()
+    {
+        
     }
 
     private void UpdateLevelUI()
     {
-        UIManager.Instance.UpdateLevelBar(_currentCollectableCount);
+        UIManager.Instance.UpdateLevelBar(_currentCollectableCount, _levelCollectableCount);
     }
 }

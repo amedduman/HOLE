@@ -15,7 +15,7 @@ public class HoleMovement : MonoBehaviour
     private MeshCollider _meshCollider;
     private Vector3 _initialPos;
     Vector3[] _initialVertsPos;
-
+    private bool _isStopping;
     struct VertData
     {
         public Vector3 Position;
@@ -23,11 +23,7 @@ public class HoleMovement : MonoBehaviour
     }
 
     private VertData[] _vertsData;
-
-    private void OnEnable()
-    {
-        GameManager.Instance.OnLoadNextLevel += ResetHolePos;
-    }
+    
 
     private void Awake()
     {
@@ -38,6 +34,9 @@ public class HoleMovement : MonoBehaviour
 
     private void Start()
     {
+        GameManager.Instance.OnLoadNextLevel += ResetHolePos;
+        GameManager.Instance.OnLoadNextLevel += () => _isStopping = false;
+        GameManager.Instance.OnWaitingForNextLevel += () => _isStopping = true;
         _initialPos = holeCenter.position;
         _initialVertsPos = _groundMesh.vertices;
         SetHoleVerts();
@@ -45,7 +44,7 @@ public class HoleMovement : MonoBehaviour
 
     private void Update()
     {
-        if (!Input.GetMouseButton(0)) return;
+        if (!Input.GetMouseButton(0) || _isStopping) return;
         var x = Input.GetAxis("Mouse X") * speed;
         var y = Input.GetAxis("Mouse Y") * speed;
         var move = new Vector3(x,-y);

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public class UIManager : MonoBehaviour
 {
@@ -16,8 +17,10 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    [SerializeField] private Text text;
-    
+    [SerializeField] private Image levelBar;
+    [SerializeField] private Button playAgainButton;
+    [SerializeField] private float levelBarFillDuration = 0.3f;
+    [SerializeField] private float endScreenShowUpDelay = 0.6f;
     
     private void Awake()
     {
@@ -29,10 +32,36 @@ public class UIManager : MonoBehaviour
         {
             Destroy(this.gameObject);
         }
+
+        playAgainButton.gameObject.SetActive(false);
     }
 
-    public void UpdateLevelBar(int CollectableCount)
+    public void UpdateLevelBar(int collectableCount, int maxCollectableCount )
     {
-        text.text = CollectableCount.ToString();
+        var levelPercent = 1 - ((float) collectableCount / maxCollectableCount);
+        levelBar.DOFillAmount(levelPercent, levelBarFillDuration);
+    }
+
+    private void ResetLevelBar()
+    {
+        levelBar.fillAmount = 0;
+    }
+
+    public void ShowEndLevelScreen()
+    {
+        StartCoroutine(DelayForShowingEndScreen());
+    }
+
+    private IEnumerator DelayForShowingEndScreen()
+    {
+        yield return new WaitForSeconds(endScreenShowUpDelay);
+        playAgainButton.gameObject.SetActive(true);
+    }
+
+    public void NextLevel()
+    {
+        GameManager.Instance.HandleNextLevel();
+        playAgainButton.gameObject.SetActive(false);
+        ResetLevelBar();
     }
 }
