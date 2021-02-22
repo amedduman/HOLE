@@ -28,6 +28,7 @@ public class LevelManager : MonoBehaviour
         [ReadOnlyInspector] public int collectableCount;
     }
 
+    [ContextMenu("Update list")]
     public void UpdateLevelListInfo()
     {
         for (int i = 0, length = levels.Count; i < length; i++)
