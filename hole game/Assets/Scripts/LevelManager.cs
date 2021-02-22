@@ -1,9 +1,4 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
-using DG.Tweening;
-using Unity.Collections;
 using UnityEngine;
 
 public class LevelManager : MonoBehaviour
@@ -97,11 +92,11 @@ public class LevelManager : MonoBehaviour
         currentLevel.level.gameObject.SetActive(false);
     }
 
-    public void ResetProcess()
-    {
-        DisableCurrentLevel();
-        LoadCurrentLevel();
-    }
+    // public void ResetProcess()
+    // {
+    //     DisableCurrentLevel();
+    //     LoadCurrentLevel();
+    // }
 
     private void SaveLevelIndex(int currentIndex)
     {

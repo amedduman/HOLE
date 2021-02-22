@@ -1,10 +1,8 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
-using UnityEditor.Build.Content;
 
 public class UIManager : MonoBehaviour
 {
@@ -71,9 +69,8 @@ public class UIManager : MonoBehaviour
         ResetLevelBar();
     }
 
-    public void HandleRestart()
+    public void HandleLevelTransition()
     {
-        ResetLevelBar();
         panel.color = Color.white;
         OnRestartEffects?.Invoke();
         panel.DOFade(0, 1);

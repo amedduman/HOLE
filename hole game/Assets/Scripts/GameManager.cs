@@ -18,7 +18,6 @@ public class GameManager : MonoBehaviour
 
     public event Action OnLoadNextLevel;
     public event Action OnWaitingForNextLevel;
-    public event Action OnWaitingRestartLevel;
 
     private void Awake()
     {
@@ -37,6 +36,8 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         Application.targetFrameRate = 30;
+        
+        UIManager.Instance.HandleLevelTransition();
         
         _currentCollectableCount = LevelManager.Instance.GetCollectableCount();
         _levelCollectableCount = LevelManager.Instance.GetCollectableCount();
@@ -67,11 +68,6 @@ public class GameManager : MonoBehaviour
     {
         DOTween.PauseAll();
         SceneManager.LoadScene(0);
-        // _currentCollectableCount = _levelCollectableCount;
-        // OnWaitingRestartLevel?.Invoke();
-        // OnLoadNextLevel?.Invoke();
-        // UIManager.Instance.HandleRestart();
-        // LevelManager.Instance.ResetProcess();
     }
 
     private void UpdateLevelUI()
